@@ -69,7 +69,7 @@
         <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
         <webjars-jquery-ui.version>1.12.1</webjars-jquery-ui.version>
         <webjars-jquery.version>3.3.0</webjars-jquery.version>
-        <wro4j.version>1.8.0</wro4j.version>
+        <wro4j.version>1.10.1</wro4j.version>
     </properties>
 
     <dependencies>
@@ -93,6 +93,10 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
