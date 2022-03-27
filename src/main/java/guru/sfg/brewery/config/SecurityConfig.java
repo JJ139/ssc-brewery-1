@@ -10,11 +10,26 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        //return NoOpPasswordEncoder.getInstance();
+        //return new LdapShaPasswordEncoder();
+        //return new StandardPasswordEncoder();
+        //return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,15 +70,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("{noop}guru")
+                //.password("guru") // NoOp
+                .password("{bcrypt}$2a$10$r3qw4qMKVHDZrCu2sU36huzS/6imtOtJnb69hSX0P5lAjWjrpX1aS") // Bcrypt
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{noop}password")
+                // .password("{SSHA}crpe8KqRb+gLGnXYx5ZVJcnmHPJpgWYtWHyPWw==") ldap
+                .password("{sha256}4e4bb0e5690e31f030e2b1a5833f4e7a8837386937f28d702829b8def4a76cc788fff7d65bc51da7") //SHA - 256
+                //.password("$2a$10$Ob5ZHkRZeiMdg0NfKms5B.AiB64mtR5CWKYCSybYUfAWXu.jnKmoe") // Bcrypt
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("{noop}tiger")
+                .password("tiger")
                 .roles("CUSTOMER");
     }
 }
